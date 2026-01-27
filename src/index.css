@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-primary: #009DE0;
+  --color-brand-accent: #FF8000;
+  
+  --spacing-touch: 44px;
+}
+
+/* Custom utilities if needed */
+@utility min-h-touch {
+  min-height: var(--spacing-touch);
+}
