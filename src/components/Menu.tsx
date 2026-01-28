@@ -6,7 +6,7 @@ import { Card } from '@/components/ui/Card';
 const MENU_ITEMS: MenuItem[] = [
     {
         id: '1',
-        name: 'Wolt Burger',
+        name: 'Signature Burger',
         description: 'Our signature burger with secret sauce, cheddar, and pickles.',
         price: 12.90,
         category: 'Main',

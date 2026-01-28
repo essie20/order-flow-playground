@@ -1,73 +1,66 @@
-# React + TypeScript + Vite
+# 🚲 Order Flow Playground
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A high-fidelity order flow simulator built with **React 19**, **TypeScript**, and **Tailwind CSS v4**. This project demonstrates professional frontend engineering patterns including explicit state machines, idempotent API interactions, and robust error handling for asynchronous operations.
 
-Currently, two official plugins are available:
+> **Disclaimer**: This project was developed as part of a technical exercise using **Antigravity**, an agentic AI coding assistant designed by the Google DeepMind team.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Key Features
 
-## React Compiler
+- **🛒 Smart Cart System**: Real-time quantity management, persistent storage via `localStorage`, and derived state calculations.
+- **📈 Live Order Tracking**: A deterministic time-based status simulator (Created → Confirmed → Preparing → Ready → Delivered).
+- **🔗 URL-Synced State**: Tracking state is synchronized with URL query parameters (`?orderId=...`), allowing for persistent session tracking across refreshes.
+- **🛡️ Idempotent Operations**: Prevents duplicate order creation through client-side generated idempotency keys and backend validation.
+- **🏗️ Mock Backend Layer**: Full API mocking using **Mock Service Worker (MSW)** with persistent storage in **IndexedDB**.
+- **🐞 Chaos Engineering Panel**: A built-in debug panel to simulate real-world networking issues (latency, 500 errors) to test application resilience.
+- **♿ Accessibility First**: Built with semantic HTML, `aria-live` regions for status updates, and focus management for critical state transitions.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+- **Core**: React 19 (Hooks, Context API, useReducer)
+- **Tooling**: Vite 7 + TypeScript (Strict Mode)
+- **Styling**: Tailwind CSS v4 (Modern CSS-only configuration)
+- **State Management**: 
+  - **Client**: `useReducer` + Context API
+  - **Server**: TanStack Query v5 (Auto-polling, retries, caching)
+- **Mocking**: MSW (Mock Service Worker) + IndexedDB (for persistence)
+- **Utility**: `clsx` + `tailwind-merge` for dynamic classes
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🏗️ Engineering Highlights
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Explicit State Machine
+The order status flow is modeled as a strict state machine to prevent "impossible" UI states. Only valid transitions (e.g., `PREPARING` → `READY`) are processed.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Persistence Strategy
+While the application state survives refreshes via `localStorage`, the simulated backend state (orders) is preserved in `IndexedDB`. This ensures that even if you refresh while an order is "Preparing", the status continues correctly rather than resetting.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Resilience Testing (Debug Panel)
+The integrated Debug Panel allows developers to:
+1. **Injected Latency**: Add artificial delay (0-5s) to simulate slow 3G/4G connections.
+2. **Failure Injection**: Set a cumulative failure rate (0-100%) to verify that the UI correctly handles and recovers from API errors (500 Internal Server Error).
+
+## 🚦 Getting Started
+
+### Prerequisites
+- Node.js 18+
+- npm 9+
+
+### Installation
+```bash
+# Clone the repository
+git clone https://github.com/essie20/order-flow-playground.git
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Building for Production
+```bash
+npm run build
 ```
+
+
+---
+Built with ❤️ and Antigravity.

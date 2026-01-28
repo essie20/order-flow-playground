@@ -2,9 +2,6 @@ import { http, HttpResponse, delay } from 'msw';
 import type { Order, OrderStatus } from '../../types';
 import { db } from './db';
 
-const DEFAULT_DELAY_MS = 800;
-const FAILURE_RATE = 0;
-
 // Deterministic status based on time
 const STATUS_FLOW: OrderStatus[] = ['CREATED', 'CONFIRMED', 'PREPARING', 'READY', 'DELIVERED'];
 const MS_PER_STAGE = 6000; // 6 seconds per stage
@@ -19,10 +16,12 @@ function calculateStatus(createdAtIso: string): OrderStatus {
 export const handlers = [
     // create order
     http.post('/api/orders', async ({ request }) => {
-        await delay(DEFAULT_DELAY_MS);
+        // Load simulation settings
+        const settings = await db.getSettings();
+        await delay(settings.delayMs);
 
-        if (Math.random() < FAILURE_RATE) {
-            return new HttpResponse(null, { status: 500, statusText: 'Internal Server Error' });
+        if (Math.random() < settings.failureRate) {
+            return new HttpResponse(null, { status: 500, statusText: 'Simulated Internal Server Error' });
         }
 
         const idempotencyKey = request.headers.get('x-idempotency-key');
@@ -57,6 +56,14 @@ export const handlers = [
 
     // get order status
     http.get('/api/orders/:id', async ({ params }) => {
+        // Load simulation settings
+        const settings = await db.getSettings();
+        await delay(settings.delayMs);
+
+        if (Math.random() < settings.failureRate) {
+            return new HttpResponse(null, { status: 500, statusText: 'Simulated Internal Server Error' });
+        }
+
         const { id } = params;
 
         const order = await db.getOrder(id as string);

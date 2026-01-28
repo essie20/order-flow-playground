@@ -4,8 +4,10 @@ import { Menu } from '@/components/Menu';
 import { Cart } from '@/components/Cart';
 import { OrderStatusView } from '@/components/OrderStatus';
 import { Button } from '@/components/ui/Button';
+import { DebugPanel } from '@/components/DebugPanel';
+import { SimulationProvider } from '@/context/SimulationContext';
 
-function App() {
+function AppContent() {
   const { items, addItem, updateQuantity, removeItem, clearCart, total } = useCart();
   const { createOrder, isCreating, createError, order, resetOrder } = useOrder();
 
@@ -27,7 +29,7 @@ function App() {
       <div className="min-h-screen bg-gray-50 pb-20 md:pb-0">
         <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
           <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-            <h1 className="font-bold text-xl text-brand-primary tracking-tight">Wolt Playground</h1>
+            <h1 className="font-bold text-xl text-brand-primary tracking-tight">Order Playground</h1>
             <div className="font-medium text-sm">
               Tracking Order
             </div>
@@ -37,6 +39,8 @@ function App() {
         <main className="max-w-5xl mx-auto px-4 py-8">
           <OrderStatusView order={order} onReset={handleReset} />
         </main>
+
+        <DebugPanel />
       </div>
     );
   }
@@ -45,7 +49,7 @@ function App() {
     <div className="min-h-screen bg-gray-50 pb-20 md:pb-0">
       <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-          <h1 className="font-bold text-xl text-brand-primary tracking-tight">Wolt Playground</h1>
+          <h1 className="font-bold text-xl text-brand-primary tracking-tight">Order Playground</h1>
           <div className="font-medium text-sm">
             Example
           </div>
@@ -94,7 +98,17 @@ function App() {
           </div>
         </div>
       </main>
+
+      <DebugPanel />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <SimulationProvider>
+      <AppContent />
+    </SimulationProvider>
   );
 }
 
