@@ -5,9 +5,11 @@ import './index.css'
 import App from './App.tsx'
 
 async function enableMocking() {
-  if (!import.meta.env.DEV) {
-    return;
-  }
+  // For this playground app, we want mocks enabled in production too
+  // so it works as a standalone demo on Render/Vercel etc.
+  // if (!import.meta.env.DEV) {
+  //   return;
+  // }
 
   const { worker } = await import('./services/mocks/browser');
 
