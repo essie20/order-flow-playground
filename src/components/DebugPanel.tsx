@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSimulation } from '@/context/SimulationContext';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -7,6 +7,27 @@ import { cn } from '@/utils/cn';
 export const DebugPanel = () => {
     const { delayMs, failureRate, updateSettings, resetSettings } = useSimulation();
     const [isOpen, setIsOpen] = useState(false);
+    const panelRef = useRef<HTMLDivElement>(null);
+
+    // Keyboard accessibility: ESC to close
+    useEffect(() => {
+        const handleEscape = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && isOpen) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener('keydown', handleEscape);
+        return () => document.removeEventListener('keydown', handleEscape);
+    }, [isOpen]);
+
+    // Focus management: focus first interactive element when opened
+    useEffect(() => {
+        if (isOpen && panelRef.current) {
+            const firstInput = panelRef.current.querySelector<HTMLInputElement>('input[type="range"]');
+            firstInput?.focus();
+        }
+    }, [isOpen]);
 
     return (
         <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end">
@@ -21,10 +42,21 @@ export const DebugPanel = () => {
 
             {/* Panel Content - Only conditionally rendered when open */}
             {isOpen && (
-                <Card className="mt-2 w-80 p-4 shadow-xl border-gray-200 animate-in slide-in-from-bottom-2 fade-in bg-white/95 backdrop-blur-sm">
+                <Card
+                    ref={panelRef}
+                    role="dialog"
+                    aria-label="Chaos Engineering Controls"
+                    className="mt-2 w-80 p-4 shadow-xl border-gray-200 animate-in slide-in-from-bottom-2 fade-in bg-white/95 backdrop-blur-sm"
+                >
                     <div className="flex justify-between items-center mb-4 border-b pb-2">
                         <h3 className="font-bold text-sm uppercase tracking-wide text-gray-500">Chaos Engineering</h3>
-                        <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-gray-600">×</button>
+                        <button
+                            onClick={() => setIsOpen(false)}
+                            className="text-gray-400 hover:text-gray-600"
+                            aria-label="Close debug panel"
+                        >
+                            ×
+                        </button>
                     </div>
 
                     <div className="space-y-4">
