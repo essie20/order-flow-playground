@@ -1,47 +1,48 @@
-@import "tailwindcss";
-
 /* Import premium font */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
 
 @theme {
   /* Core brand colors - refined palette */
-  --color-brand-primary: #0891b2;      /* Deeper teal - less generic blue */
+  --color-brand-primary: #0891b2;
+  /* Deeper teal - less generic blue */
   --color-brand-primary-dark: #0e7490;
-  --color-brand-accent: #f97316;       /* Warm orange */
+  --color-brand-accent: #f97316;
+  /* Warm orange */
   --color-brand-accent-dark: #ea580c;
-  
+
   /* Neutral palette with warmth */
   --color-surface: #fafafa;
   --color-surface-elevated: #ffffff;
   --color-border: #e5e5e5;
   --color-border-subtle: #f0f0f0;
-  
+
   /* Text hierarchy */
   --color-text-primary: #171717;
   --color-text-secondary: #525252;
   --color-text-muted: #a3a3a3;
-  
+
   /* Semantic colors */
   --color-success: #10b981;
   --color-warning: #f59e0b;
   --color-error: #ef4444;
-  
+
   /* Spacing */
   --spacing-touch: 44px;
-  
+
   /* Shadows - layered depth */
-  --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
-  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.04);
-  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.08), 0 10px 10px -5px rgba(0,0,0,0.03);
-  
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
+
   /* Border radius */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
   --radius-xl: 20px;
-  
+
   /* Transitions */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -112,8 +113,15 @@ body {
 
 /* Animated pulse for loading states */
 @keyframes subtle-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
 }
 
 @utility animate-subtle-pulse {
@@ -126,6 +134,7 @@ body {
     opacity: 0;
     transform: translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -142,6 +151,7 @@ body {
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -154,17 +164,20 @@ body {
 
 /* Progress bar shimmer */
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @utility animate-shimmer {
-  background: linear-gradient(
-    90deg,
-    var(--color-brand-primary) 0%,
-    #22d3ee 50%,
-    var(--color-brand-primary) 100%
-  );
+  background: linear-gradient(90deg,
+      var(--color-brand-primary) 0%,
+      #22d3ee 50%,
+      var(--color-brand-primary) 100%);
   background-size: 200% 100%;
   animation: shimmer 2s ease-in-out infinite;
 }

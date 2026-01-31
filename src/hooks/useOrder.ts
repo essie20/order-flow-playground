@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/services/api';
 import type { CartItem } from '@/types';
 
 export const useOrder = () => {
+    const queryClient = useQueryClient();
     // Sync state with URL query param
     const getOrderIdFromUrl = () => {
         const params = new URLSearchParams(window.location.search);
@@ -29,6 +30,8 @@ export const useOrder = () => {
             api.createOrder(data.items, data.total),
         onSuccess: (order) => {
             setActiveOrderId(order.id);
+            // Prime the cache immediately so UI transitions instantly without waiting for first poll
+            queryClient.setQueryData(['order', order.id], order);
         },
     });
 
