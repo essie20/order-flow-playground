@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSimulation } from '@/context/SimulationContext';
 import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
 import { cn } from '@/utils/cn';
 import { worker } from '@/services/mocks/browser'; // Import MSW worker
 
